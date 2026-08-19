@@ -1,0 +1,1 @@
+export const exploreRole = `MATCH (r:Role {id:$roleId}) OPTIONAL MATCH (r)-[:REQUIRES]->(s:Skill) OPTIONAL MATCH (p:Project)-[:RECOMMENDED_FOR]->(r) RETURN r, collect(DISTINCT s) AS skills, collect(DISTINCT p) AS projects`;

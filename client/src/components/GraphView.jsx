@@ -1,0 +1,11 @@
+import { useRef, useState } from 'react';
+const colors={Role:'#fb923c',Skill:'#36c5a2',Project:'#8b7cf6'};
+export default function GraphView({graph}) {
+  const [selected,setSelected]=useState(null),[view,setView]=useState({x:0,y:0,scale:1}); const drag=useRef(null);
+  if(!graph)return null;
+  const nodes=[{...graph.role,type:'Role'},...graph.skills.map(x=>({...x,type:'Skill'})),...graph.projects.map(x=>({...x,type:'Project'}))];
+  const position=(n,i)=>i===0?[380,55]:n.type==='Skill'?[150+((i-1)%4)*155,145+Math.floor((i-1)/4)*75]:[180+((i-1)%3)*200,310];
+  const pan=e=>{if(!drag.current)return;const dx=e.clientX-drag.current.x,dy=e.clientY-drag.current.y;setView(v=>({...v,x:v.x+dx,y:v.y+dy}));drag.current={x:e.clientX,y:e.clientY};};
+  const zoom=amount=>setView(v=>({...v,scale:Math.max(.65,Math.min(1.6,v.scale+amount))}));
+  return <div className="graph"><div className="graph-controls"><button aria-label="Zoom in" onClick={()=>zoom(.15)}>+</button><button aria-label="Zoom out" onClick={()=>zoom(-.15)}>−</button><button onClick={()=>setView({x:0,y:0,scale:1})}>Reset</button></div><svg viewBox="0 0 760 350" aria-label="Interactive role relationship graph" onWheel={e=>zoom(e.deltaY<0?.1:-.1)} onPointerDown={e=>drag.current={x:e.clientX,y:e.clientY}} onPointerMove={pan} onPointerUp={()=>drag.current=null} onPointerLeave={()=>drag.current=null}><g transform={`translate(${view.x} ${view.y}) scale(${view.scale})`}>{nodes.slice(1).map((n,index)=>{const i=index+1,[x,y]=position(n,i);return <g key={`edge-${n.id}`}><line x1="380" y1="66" x2={x} y2={y} stroke="#d9dced" strokeWidth="2"/><text x={(380+x)/2} y={(66+y)/2-4} fill="#8490a7" fontSize="8">{n.type==='Skill'?'REQUIRES':'RECOMMENDED'}</text></g>})}{nodes.map((n,i)=>{const[x,y]=position(n,i);return <g key={n.id} className="graph-node" onClick={e=>{e.stopPropagation();setSelected(n)}}><circle cx={x} cy={y} r="27" fill={colors[n.type]} opacity=".94"/><text x={x} y={y+4} textAnchor="middle" fill="white" fontSize="10">{n.type[0]}</text><text x={x} y={y+43} textAnchor="middle" fill="#27324b" fontSize="11">{n.name.length>19?`${n.name.slice(0,18)}…`:n.name}</text></g>})}</g></svg>{selected&&<div className="graph-tip"><b>{selected.name}</b><span>{selected.type}</span></div>}</div>;
+}

@@ -1,0 +1,2 @@
+export function notFound(_req,res) { res.status(404).json({ error:'Endpoint not found.' }); }
+export function errorHandler(err,_req,res,_next) { const unavailable = err.code === 'DB_UNAVAILABLE' || /connect|database|service unavailable/i.test(err.message); console.error(`[API] ${err.message}`); res.status(err.status || (unavailable ? 503 : 500)).json({ error: unavailable ? 'Unable to connect to the graph database. Please try again later.' : err.status ? err.message : 'Something went wrong. Please try again.' }); }

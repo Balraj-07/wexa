@@ -1,0 +1,20 @@
+{
+  "name": "careergraph",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "seed": "npm run seed --prefix server",
+    "test": "npm test --prefix server",
+    "build": "npm run build --prefix client",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "neo4j-driver": "^5.27.0"
+  },
+  "devDependencies": { "concurrently": "^9.1.2" }
+}
