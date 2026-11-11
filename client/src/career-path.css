@@ -1,0 +1,33 @@
+.path-controls .primary:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.domain-change-notice {
+  display: grid;
+  gap: 5px;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 14px 16px;
+  border: 1px solid #f1d7a2;
+  border-radius: 9px;
+  background: #fff8e9;
+  color: #76551c;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.domain-change-notice span {
+  color: #806b48;
+}
+
+.path-nodes .domain-transition-step > span {
+  background: #fff3d8;
+  color: #76551c;
+  border: 1px dashed #d8aa55;
+}
+
+.path-nodes .domain-transition-step small {
+  color: #94743a;
+}
